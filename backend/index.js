@@ -6,7 +6,7 @@ const { userRouter } = require('./routes/user');
 const { courseRouter } = require('./routes/course');
 const { adminRouter } = require('./routes/admin');
 
-const { UserModel, AdminModel, CourseModel , PurchaseModel } = require('./db');
+const { UserModel, AdminModel, CourseModel , PurchaseModel } = require('./database/db');
 
 
 
