@@ -20,7 +20,7 @@ A full-stack backend project for a course-selling website built using **Node.js*
 ### 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/course-selling-backend.git
+git clone https://github.com/maneetjha/course-selling-backend.git
 cd course-selling-backend
 npm install
 ```
