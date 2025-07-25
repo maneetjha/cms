@@ -69,6 +69,18 @@ adminRouter.post('/signin',async (req,res)=>{                             //Rout
     }
 })
 
+adminRouter.get('/courses/preview',AdminMiddleWare,async (req,res) => {             //Route to fetch all the courses created by the admin.
+    const creatorID = req.creatorID
+    const coursesCreated = await CourseModel.find({creatorID:creatorID})
+    console.log(coursesCreated)
+    if(coursesCreated.length == 0){
+        res.json({msg: "No courses by this creator"})
+    }
+    res.json({
+        coursesCreated
+    })
+})
+
 
 
 
