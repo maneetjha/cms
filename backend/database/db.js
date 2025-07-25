@@ -42,7 +42,6 @@ const courseSchema = new Schema({
     },
     description: {
         type: String,
-        required: true
     },
     price: {
         type: Number,
@@ -50,7 +49,6 @@ const courseSchema = new Schema({
     },
     imageLink: {
         type: String,
-        required: true
     },
     creatorID:{
         type: objectID,

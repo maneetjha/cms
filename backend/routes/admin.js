@@ -1,7 +1,7 @@
 require ('dotenv').config()
 const { Router } = require('express');
 const adminRouter = Router();
-const { AdminModel }=require('../database/db')
+const { AdminModel, CourseModel }=require('../database/db')
 const AdminMiddleWare = require('../middleware/AdminMiddleWare.js')
 const bcrypt = require('bcrypt')
 const { z } = require('zod')
@@ -73,19 +73,113 @@ adminRouter.post('/signin',async (req,res)=>{
 
 
 
-adminRouter.post('/courses',AdminMiddleWare,(req,res)=>{
-    res.send("Course created successfully")
+adminRouter.post('/courses',AdminMiddleWare,async(req,res)=>{
+    const { title, description, price, imageLink} = req.body
+    const creatorID = req.creatorID
+
+    try{
+        await CourseModel.create({
+            title : title,
+            description: description , 
+            price: price , 
+            imageLink: imageLink, 
+            creatorID:creatorID
+        })
+
+        res.json({msg:"Course created successfully"})
+
+    } catch(err)
+    {
+        res.status(400).json({msg:"Failed to add course!"})
+
+    }
 })
 
 
 
 
-adminRouter.put('/courses/:id',(req,res)=>{
-    res.send("Course updated successfully")
-})
+adminRouter.put('/courses',AdminMiddleWare,async(req,res)=>{
+   const creatorID=req.creatorID
+   const courseid=req.body.courseid
 
-adminRouter.delete('/courses/:id',(req,res)=>{
-    res.send("Course deleted successfully")
+   const { title, description, price, imageLink } = req.body
+
+    try{
+        const iscreator = await CourseModel.findOne({
+            _id:courseid, 
+            creatorID:creatorID
+        })
+        if(iscreator){
+            await CourseModel.updateOne(
+            { _id:courseid },   //filter the course by it's id
+
+            {
+                $set:{                      //Using $set ensures only the specified fields are updated not the entire document.
+                    title: title, 
+                    description: description, 
+                    price: price, 
+                    imageLink: imageLink
+                }
+            })
+
+            res.json(
+                {msg:"Successfully updated the course"}
+            )
+        }
+        else{
+            res.status(403).json(
+                {
+                    msg:"You are not the creator of this course or the course does not exists!"
+            })
+        }
+
+    } catch(err)
+    {
+        console.log(err)
+        res.status(400).json({msg:"Failed to update course!"})
+
+    }
+}) 
+
+
+
+
+
+adminRouter.delete('/courses/:id',AdminMiddleWare,async(req,res)=>{
+    const creatorID=req.creatorID
+    const courseid=req.params.id
+
+        try{
+            const iscreator = await CourseModel.findOne({
+                _id:courseid, 
+                creatorID:creatorID
+            })
+            if(iscreator){
+                const result=await CourseModel.deleteOne({
+                    _id:courseid, 
+                    creatorID:creatorID
+                });
+
+                if (result.deletedCount === 0) {
+                    return res.status(400).json({ msg: "Course not deleted" });
+                }
+
+                return res.json({ msg: "Successfully deleted the course" });
+
+            }
+            else{
+                res.status(403).json(
+                    {
+                        msg:"Can't delete the course"
+                    }
+                )
+            }
+
+        } catch(err)
+        {   console.log(err)
+            res.status(400).json({msg:"Failed to update course!"})
+
+        }
 })
 
 

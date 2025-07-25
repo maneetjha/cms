@@ -1,7 +1,7 @@
 require ('dotenv').config();
 const { Router } = require('express');
 const userRouter = Router();
-const { UserModel } = require('../database/db');
+const { UserModel, CourseModel, PurchaseModel} = require('../database/db');
 const UserMiddleWare = require('../middleware/UserMiddleWare');
 const bcrypt = require('bcrypt');
 const { z } = require ('zod');
@@ -71,9 +71,33 @@ userRouter.post('/signin', (req, res) => {
 
 
 
-userRouter.get('/purchased',UserMiddleWare, (req, res) => {
-  res.send('Hello these are purchased courses');
+userRouter.get('/purchased',UserMiddleWare, async(req, res) => {
+     const userid=req.userid
+     const result = await PurchaseModel.find({userID:userid})
+    //  const userpurchased=[{}]                        //inefficient
+
+    //  for(let i=0;i<result.length;i++){
+    //       const courseinfo=await CourseModel.findOne({_id:result[i].courseID})
+    //       userpurchased.push(courseinfo)
+    //   }
+
+    //   res.json({
+    //     "course purchased":userpurchased
+    //   })
+
+    const courseidcollection = result.map(results => results.courseID)
+    
+    const courseinfo = await CourseModel.find({ _id: { $in: courseidcollection } })
+
+    res.json(
+      {
+        courseinfo
+      }
+    )
+
 });
+  
+
 
 
 

@@ -8,8 +8,8 @@ function adminMiddleWare(req,res,next){
   }
   try {
     const token = authHeader;
-    const userid = jwt.verify(token, process.env.JWT_ADMIN);
-    req.userid=userid.id;
+    const creatorID = jwt.verify(token, process.env.JWT_ADMIN);
+    req.creatorID=creatorID.id;
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid token" });
