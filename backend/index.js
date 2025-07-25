@@ -8,7 +8,7 @@ const { adminRouter } = require('./routes/admin');
 
 const { UserModel, AdminModel, CourseModel , PurchaseModel } = require('./database/db');
 
-
+app.use(express.json())
 
 app.use('/user', userRouter);
 app.use('/course', courseRouter);
