@@ -5,7 +5,7 @@ const { CourseModel, PurchaseModel } = require('../database/db')
 
 
 
-courseRouter.get('/preview', async (req, res) => {
+courseRouter.get('/preview', async (req, res) => {          //Route to show all the courses available on website
   const courses = await CourseModel.find()
   res.json(
     {course : courses}
@@ -16,7 +16,7 @@ courseRouter.get('/preview', async (req, res) => {
 
 
 
-courseRouter.post('/purchase',userMiddleWare, async(req, res) => {
+courseRouter.post('/purchase',userMiddleWare, async(req, res) => {        //Route for an user to purchase the course
   const userid=req.userid;
   const courseid=req.body.courseid
   

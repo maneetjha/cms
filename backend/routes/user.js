@@ -19,7 +19,7 @@ const userSchema = z.object({
 
 
 
-userRouter.post('/signup', async (req, res) => {
+userRouter.post('/signup', async (req, res) => {          // Route to sign the user up.
   const { name, email, password } = req.body;
   const result = userSchema.safeParse(req.body);
 
@@ -48,7 +48,7 @@ userRouter.post('/signup', async (req, res) => {
 
 
 
-userRouter.post('/signin', (req, res) => {
+userRouter.post('/signin', (req, res) => {             //Route to sign the user in.
   const { email, password } = req.body;
 
   UserModel.findOne({ email: email })
@@ -71,7 +71,7 @@ userRouter.post('/signin', (req, res) => {
 
 
 
-userRouter.get('/purchased',UserMiddleWare, async(req, res) => {
+userRouter.get('/purchased',UserMiddleWare, async(req, res) => {            //Route for user to get all the courses he/she has purchased.
      const userid=req.userid
      const result = await PurchaseModel.find({userID:userid})
     //  const userpurchased=[{}]                        //inefficient

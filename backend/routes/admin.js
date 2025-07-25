@@ -17,7 +17,7 @@ const adminschema= z.object({
 
 
 
-adminRouter.post('/signup',async(req,res)=>{
+adminRouter.post('/signup',async(req,res)=>{                              //Route for admin to signup.
     const { name, email, password }= req.body
     const result = adminschema.safeParse(req.body);
 
@@ -45,7 +45,7 @@ adminRouter.post('/signup',async(req,res)=>{
 });
 
 
-adminRouter.post('/signin',async (req,res)=>{
+adminRouter.post('/signin',async (req,res)=>{                             //Route for admin to signin.
     const { email, password } = req.body;
     const admininfo= await AdminModel.findOne({email:email})
 
@@ -73,7 +73,7 @@ adminRouter.post('/signin',async (req,res)=>{
 
 
 
-adminRouter.post('/courses',AdminMiddleWare,async(req,res)=>{
+adminRouter.post('/courses',AdminMiddleWare,async(req,res)=>{               //Route for admin to create course.
     const { title, description, price, imageLink} = req.body
     const creatorID = req.creatorID
 
@@ -98,7 +98,7 @@ adminRouter.post('/courses',AdminMiddleWare,async(req,res)=>{
 
 
 
-adminRouter.put('/courses',AdminMiddleWare,async(req,res)=>{
+adminRouter.put('/courses',AdminMiddleWare,async(req,res)=>{            //Route for admin to update course details.
    const creatorID=req.creatorID
    const courseid=req.body.courseid
 
@@ -145,7 +145,7 @@ adminRouter.put('/courses',AdminMiddleWare,async(req,res)=>{
 
 
 
-adminRouter.delete('/courses/:id',AdminMiddleWare,async(req,res)=>{
+adminRouter.delete('/courses/:id',AdminMiddleWare,async(req,res)=>{                 //Route for admin to delete course.
     const creatorID=req.creatorID
     const courseid=req.params.id
 
